@@ -21,7 +21,38 @@ public class User {
     }
 
     public boolean isAlive() {
-        return alive;
+        int contador = 0;
+        for (Ship ship : ships) {
+            for (int i = 0; i < ship.getTamano(); i++) {
+                switch (ship.getOrientation()){
+                    case NORTH -> {
+                        if (positionBoard.board[ship.getPuntoInicial().getX()][ship.getPuntoInicial().getY() - i] == 'X') {
+                            contador++;
+                        }
+                    }
+                    case SOUTH -> {
+                        if (positionBoard.board[ship.getPuntoInicial().getX()][ship.getPuntoInicial().getY() + i] == 'X') {
+                            contador++;
+                        }
+                    }
+                    case WEST -> {
+                        if (positionBoard.board[ship.getPuntoInicial().getX()-i][ship.getPuntoInicial().getY()] == 'X') {
+                            contador++;
+                        }
+                    }
+                    case EAST -> {
+                        if (positionBoard.board[ship.getPuntoInicial().getX()+i][ship.getPuntoInicial().getY()] == 'X') {
+                            contador++;
+                        }
+                    }
+                }
+            }
+        }
+        if (contador == 9){
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public void setDie() {
@@ -29,38 +60,47 @@ public class User {
     }
 
     public boolean attack(User user, Point point) {
-        user.ships.forEach(ship -> {
-            if (ship.getShot(point, user.positionBoard)) {
-                attackBoard.board[point.getX()][point.getY()] = 'X';
+        for (Ship ship : user.ships){
+            if (ship.getShot(point, user.positionBoard, attackBoard)) {
                 if (ship.isSunk(ship, user.positionBoard)) {
-                    for (int i = 0; i < ship.getTamano(); i++) {
-                        switch (ship.getOrientation()) {
-                            case NORTH -> {
-                                attackBoard.board[ship.getPuntoInicial().getX()][ship.getPuntoInicial().getY() - i] = 'X';
-                            }
-                            case SOUTH -> {
-                                attackBoard.board[ship.getPuntoInicial().getX()][ship.getPuntoInicial().getY() + i] = 'X';
-                            }
-                            case EAST -> {
-                                attackBoard.board[ship.getPuntoInicial().getX() - i][ship.getPuntoInicial().getY()] = 'X';
-                            }
-                            case WEST -> {
-                                attackBoard.board[ship.getPuntoInicial().getX() + i][ship.getPuntoInicial().getY()] = 'X';
-                            }
-                        }
-                    }
                     System.out.println("You sunk a ship!");
-                }
-                if (!user.isAlive()) {
+                }else if (!user.isAlive()) {
                     user.setDie();
                     System.out.println("You sank the last ship. You won. Congratulations!");
                 }
             } else {
-                attackBoard.board[point.getX()][point.getY()] = 'M';
+                System.out.println("You missed!");
             }
-        });
-        return true;
+        }
+        return false;
     }
 
+    public boolean canBePlace(Point puntoInicial, CardinalPoints orientation, int tamano){
+        for (int i = 0; i < tamano; i++) {
+            switch (orientation){
+                case NORTH -> {
+                    if (positionBoard.board[puntoInicial.getX()][puntoInicial.getY() - i] != '~') {
+                        return false;
+                    }
+                }
+                case SOUTH -> {
+                    if (positionBoard.board[puntoInicial.getX()][puntoInicial.getY() + i] != '~') {
+                        return false;
+                    }
+                }
+                case WEST -> {
+                    if (positionBoard.board[puntoInicial.getX()-i][puntoInicial.getY()] != '~') {
+                        return false;
+                    }
+                }
+                case EAST -> {
+                    if (positionBoard.board[puntoInicial.getX()+i][puntoInicial.getY()] != '~') {
+                       return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
 
 }

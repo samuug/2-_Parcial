@@ -7,6 +7,7 @@ public class Battleship extends Ship{
 
     public Battleship(Point puntoInicial, CardinalPoints orientation, Board board) {
         super(puntoInicial, orientation, 5);
+
         setBarco(puntoInicial, orientation, 5, board);
     }
 
@@ -24,17 +25,20 @@ public class Battleship extends Ship{
                 }
                 System.out.println("Battleship placed");
             }
-            case EAST -> {
+            case WEST -> {
                 for (int i = 0; i < tamano; i++) {
                     board.board[puntoInicial.getX()-i][puntoInicial.getY()] = 'B';
                 }
                 System.out.println("Battleship placed");
             }
-            case WEST -> {
+            case EAST -> {
                 for (int i = 0; i < tamano; i++) {
                     board.board[puntoInicial.getX()+i][puntoInicial.getY()] = 'B';
                 }
                 System.out.println("Battleship placed");
+            }
+            case NONE -> {
+                System.out.println("Battleship not placed");
             }
         }
     }

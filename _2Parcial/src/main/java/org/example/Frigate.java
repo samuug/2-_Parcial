@@ -22,15 +22,18 @@ public class Frigate extends Ship{
                     board.board[puntoInicial.getX()][puntoInicial.getY() + i] = 'F';
                 }
             }
-            case EAST -> {
+            case WEST -> {
                 for (int i = 0; i < tamano; i++) {
                     board.board[puntoInicial.getX()-i][puntoInicial.getY()] = 'F';
                 }
             }
-            case WEST -> {
+            case EAST -> {
                 for (int i = 0; i < tamano; i++) {
                     board.board[puntoInicial.getX()+i][puntoInicial.getY()] = 'F';
                 }
+            }
+            case NONE -> {
+                System.out.println("Frigate not placed");
             }
         }
     }

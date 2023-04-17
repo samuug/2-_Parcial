@@ -25,7 +25,7 @@ public class Board{
     public void fillBoard() {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                board[i][j] = '~';
+                board[j][i] = '~';
             }
         }
     }
@@ -35,7 +35,7 @@ public class Board{
         for (int i = 0; i < SIZE; i++) {
             System.out.print(i + " ");
             for (int j = 0; j < SIZE; j++) {
-                System.out.print(board[i][j] + " ");
+                System.out.print(board[j][i] + " ");
             }
             System.out.println();
         }
